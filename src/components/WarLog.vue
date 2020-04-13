@@ -8,41 +8,43 @@
           indeterminate
           v-if="transformed.length == 0"
         ></v-progress-circular>
-        <v-card
-          class="player mb-2"
-          v-for="(player, i) in transformed"
-          :key="i"
-          flat
-        >
-          <div class="d-flex justify-space-between">
-            <div class="d-flex">
-              <div class="ranking d-flex align-center ma-2 pa-1">
-                #{{i+1}}
+        <v-responsive :min-width="450" :max-width="600">
+          <v-card
+            class="player mb-2"
+            v-for="(player, i) in transformed"
+            :key="i"
+            flat
+          >
+            <div class="d-flex justify-space-between">
+              <div class="d-flex">
+                <div class="ranking d-flex align-center ma-2 pa-1">
+                  #{{i+1}}
+                </div>
+                <v-card-title
+                  class="headline px-0"
+                  v-text="player.name"
+                ></v-card-title>
               </div>
-              <v-card-title
-                class="headline px-0"
-                v-text="player.name"
-              ></v-card-title>
-            </div>
-            <div class="wars d-flex align-center mr-2">
-              <div 
-                v-for="(war, j) in player.wars"
-                :key="j"
-                class="d-flex ml-1 log align-top"
-                v-bind:class="logClass(war)"
-              >
-                <v-badge
-                  bordered
-                  v-if="war.collectionDayBattlesPlayed < 3"
-                  color="warning"
-                  class="ml-2 mt-1"
-                  dot
+              <div class="wars d-flex align-center mr-2">
+                <div 
+                  v-for="(war, j) in player.wars"
+                  :key="j"
+                  class="d-flex ml-1 log align-top"
+                  v-bind:class="logClass(war)"
                 >
-                </v-badge>
+                  <v-badge
+                    bordered
+                    v-if="war.collectionDayBattlesPlayed < 3"
+                    color="warning"
+                    class="ml-2 mt-1"
+                    dot
+                  >
+                  </v-badge>
+                </div>
               </div>
             </div>
-          </div>
-        </v-card>
+          </v-card>
+        </v-responsive>
       </v-col>
     </v-row>
     <v-row class="text-center" v-if="transformed.length > 0">
@@ -254,8 +256,6 @@
 <style scoped>
 .v-card.player {
   background: linear-gradient(to bottom, #F1F1F1 0%,#F1F1F1 50%,#F1F1F1 50%,#E1E1E1 50%,#E1E1E1 100%);
-  /*min-width: 500px;*/
-  max-width: 800px;
 }
 .v-card.player .headline {
   color: #333;

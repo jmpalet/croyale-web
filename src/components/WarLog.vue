@@ -80,13 +80,16 @@
 </template>
 
 <script>
+  //import clan from './../../resources/clan.json'
+  //import warlog from './../../resources/warlog.json'
   import axios from 'axios'
 
   export default {
     name: 'WarLog',
 
     data: () => ({
-      error: '',
+      //clan: clan,
+      //warlog: warlog,
       transformed: [],
       legend: [
         {
@@ -138,8 +141,103 @@
         }
         return null
       },
+      calculateScore: function(warlogParticipant) {
+        var score = 0
+        if (warlogParticipant.cardsEarned == 2805 || warlogParticipant.cardsEarned == 2640) {
+          score += 500
+        }
+        if (warlogParticipant.battlesPlayed > 0) {
+          if (warlogParticipant.wins == 1) {
+            score += 3500
+          }
+          if (warlogParticipant.wins == 2) {
+            score += 3500 + 1500
+          }
+        } else {
+          score -= 2000
+        }
+        score -= 500 * (3 - warlogParticipant.collectionDayBattlesPlayed)
+        return score
+      },
+      getWarForPlayer: function(warlogParticipant, warCreatedDate) {
+        var war = {
+          'createdDate': warCreatedDate,
+        }
+        if (warlogParticipant.cardsEarned == 2805 || warlogParticipant.cardsEarned == 2640) {
+          war.maxCollectionPointsReached = true
+        } else {
+          war.maxCollectionPointsReached = false
+        }
+        war.won = warlogParticipant.wins
+        war.lost = warlogParticipant.battlesPlayed - warlogParticipant.wins
+        war.collectionDayBattlesPlayed = warlogParticipant.collectionDayBattlesPlayed
+        war.score = this.calculateScore(warlogParticipant)
+        return war
+      },
+      sortPlayersByScore: function(players) {
+        var sortable = [];
+        for (var tag in players) {
+          sortable.push([tag, players[tag].score]);
+        }
+        sortable.sort(function(a, b) {
+          return b[1] - a[1];
+        });
+        sortable.forEach(sorted => {
+          var tag = sorted[0]
+          if (Object.keys(players[tag].wars).length > 0) {
+            this.transformed.push(players[tag])
+          }
+        })
+      },
+      addMissingWars: function(warCreatedDates) {
+        this.transformed.forEach(p => {
+          warCreatedDates.forEach(date => {
+            if (!(date in p.wars)) {
+              p.wars[date] = {
+                'createdDate': date,
+              }
+            }
+          })
+          var sortableWars = []
+          for (var warDate in p.wars) {
+            sortableWars.push(warDate)
+          }
+          sortableWars.sort()
+          sortableWars.reverse()
+          var sortedWars = {}
+          sortableWars.forEach(sortedWar => {
+            sortedWars[sortedWar] = p.wars[sortedWar]
+          })
+          p.wars = sortedWars
+        })
+      },
+      transformData: function() {
+        var warCreatedDates = []
+        var players = {}
+        this.clan.items.forEach(p => players[p.tag] = {
+          'name': p.name,
+          'score': 0,
+          'wars': {}
+          })
+        this.warlog.items.forEach(w => {
+          if (!(w.createdDate in warCreatedDates)) {
+            warCreatedDates.push(w.createdDate)
+          }
+          w.participants.forEach(participant => {
+            if (participant.tag in players) {
+              var war = this.getWarForPlayer(participant, w.createdDate)
+              players[participant.tag].wars[w.createdDate] = war
+              players[participant.tag].score += war.score
+            }
+          })
+        })
+        this.$emit('updateLastWarDate', warCreatedDates[0]);
+        this.sortPlayersByScore(players)
+        this.addMissingWars(warCreatedDates)
+      },
     },
     created() {
+      //this.transformData()
       axios
         .get('http://130.211.26.158/clan/2PUGVU8U/warlog')
         .then(response => {
@@ -147,7 +245,7 @@
           this.$emit('updateLastWarDate', response.data.lastWarEndDate);
         })
         .catch(error => {
-          this.error = error.response
+          console.log(error.response)
         })
     }
   }

@@ -20,7 +20,7 @@
 
       <v-spacer></v-spacer>
 
-      <span class="mr-1">{{lastWarDate}}</span>
+      <span class="mr-1">{{lastWarDateFormatted}}</span>
     </v-app-bar>
 
     <v-content>
@@ -36,6 +36,11 @@ export default {
   name: 'App',
   components: {
     WarLog,
+  },
+  computed: {
+    lastWarDateFormatted: function () {
+      return this.lastWarDate.replace("T", " ");
+    }
   },
   data: () => ({
     lastWarDate: ''

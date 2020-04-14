@@ -16,4 +16,28 @@
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-app.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+      https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-analytics.js"></script>
+
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyDNeHu4idNfjrRfS4UToers7LMpk0awfh8",
+      authDomain: "croyale.firebaseapp.com",
+      databaseURL: "https://croyale.firebaseio.com",
+      projectId: "croyale",
+      storageBucket: "croyale.appspot.com",
+      messagingSenderId: "970672814515",
+      appId: "1:970672814515:web:2d1dcb21d9db308007b3c6",
+      measurementId: "G-5ZZ3ZJ4YKE"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
 </html>

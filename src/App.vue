@@ -24,7 +24,7 @@
     </v-app-bar>
 
     <v-content>
-      <WarLog @updateLastWarDate="lastWarDate = $event"/>
+      <WarLog v-bind:clanTag=clanTag @updateLastWarDate="lastWarDate = $event"/>
     </v-content>
   </v-app>
 </template>
@@ -43,8 +43,13 @@ export default {
     }
   },
   data: () => ({
-    lastWarDate: ''
+    lastWarDate: '',
+    clanTag: '',
   }),
+  created() {
+    var path = window.location.pathname
+    this.clanTag = path.length > 1 ? path.replace('/','') : '2PUGVU8U';
+  }
 };
 </script>
 

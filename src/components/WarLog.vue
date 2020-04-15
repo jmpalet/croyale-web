@@ -86,7 +86,9 @@
 
   export default {
     name: 'WarLog',
-
+    props: {
+      clanTag: String,
+    },
     data: () => ({
       error: 'error',
       transformed: [],
@@ -143,7 +145,7 @@
     },
     created() {
       axios
-        .get('https://croyale-api.herokuapp.com/clan/2PUGVU8U/warlog')
+        .get('https://croyale-api.herokuapp.com/clan/'+this.clanTag+'/warlog')
         .then(response => {
           this.transformed = response.data.warlog
           this.$emit('updateLastWarDate', response.data.lastWarEndDate);

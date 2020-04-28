@@ -8,7 +8,7 @@
           indeterminate
           v-if="transformed.length == 0"
         ></v-progress-circular>
-        <v-responsive :min-width="450" :max-width="600">
+        <v-responsive  :max-width="600">
           <v-card
             class="player mb-2"
             v-for="(player, i) in transformed"
@@ -17,11 +17,14 @@
           >
             <div class="d-flex justify-space-between">
               <div class="d-flex">
-                <div class="ranking d-flex align-center ma-2 pa-1">
+                <div
+                  class="ranking d-flex align-center ma-2 pa-1 subtitle-2" 
+                  :class="i+1 == 1 ? 'gold' : i+1 == 2 ? 'silver' : i+1 == 3 ? 'bronze' : 'plain'"
+                >
                   #{{i+1}}
                 </div>
                 <v-card-title
-                  class="headline px-0"
+                  class="subtitle-2 px-0 pa-0 text-no-wrap"
                   v-text="player.name"
                 ></v-card-title>
               </div>
@@ -72,7 +75,7 @@
                 >
                 </v-badge>
               </div>
-              <span>{{legendItem.description}}</span>
+              <span class="caption">{{legendItem.description}}</span>
             </div>
           </div>
         </v-card>
@@ -96,7 +99,7 @@
         {
           'type': 'log',
           'class': 'all',
-          'description': 'Batalla final i batalles de recol·lecció guanyades'
+          'description': 'Batalles final i de recol·lecció guanyades'
         },
         {
           'type': 'log',
@@ -168,11 +171,18 @@
 .v-card.player .ranking {
   background: #444;
   color: #FFF;
-  font-size: 12px;
   border-radius: 4px
 }
+.v-card.player .ranking.gold {
+  background: #FFB800;
+}
+.v-card.player .ranking.silver {
+  background: #CECECE;
+}
+.v-card.player .ranking.bronze {
+  background: #BC6618;
+}
 .v-card.legend {
-  font-size: 10px;
   color: #333;
 }
 .log{

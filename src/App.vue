@@ -8,19 +8,19 @@
       <div class="d-flex align-center">
         <v-img
           alt="Clash Royale Logo"
-          class="shrink mr-2"
+          class="logo mr-2"
           src="./assets/logo.png"
           transition="scale-transition"
           width="20"
         />
-        <h1 class="headline mr-4">
+        <h1 class="headline mr-2 text-no-wrap">
           Clash Royale
         </h1>
       </div>
 
       <v-spacer></v-spacer>
 
-      <span class="mr-1">{{lastWarDateFormatted}}</span>
+      <span class="mr-1 caption">{{lastWarDateFormatted}}</span>
     </v-app-bar>
 
     <v-content>
@@ -49,11 +49,15 @@ export default {
   created() {
     var path = window.location.pathname
     this.clanTag = path.length > 1 ? path.replace('/','') : '2PUGVU8U';
+    
   }
 };
 </script>
 
 <style>
+.logo {
+  border-radius: 4px;
+}
 .theme--light.v-application {
   background-color: #FFF;
 }

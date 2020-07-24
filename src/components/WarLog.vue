@@ -18,13 +18,23 @@
             <div class="d-flex justify-space-between">
               <div class="d-flex">
                 <div
-                  class="ranking d-flex align-center ma-2 pa-1 subtitle-2" 
-                  :class="i+1 == 1 ? 'gold' : i+1 == 2 ? 'silver' : i+1 == 3 ? 'bronze' : 'plain'"
+                  class="ranking d-flex align-center ma-2 pa-1" 
+                  :class="{
+                    'gold': i+1 == 1,
+                    'silver': i+1 == 2,
+                    'bronze': i+1 == 3,
+                    'body-2': !$vuetify.breakpoint.xs,
+                    'caption': $vuetify.breakpoint.xs,
+                  }"
                 >
                   #{{i+1}}
                 </div>
                 <v-card-title
-                  class="subtitle-2 px-0 pa-0 text-no-wrap"
+                  class="px-0 pa-0 text-no-wrap"
+                  :class="{
+                    'headline': !$vuetify.breakpoint.xs,
+                    'subtitle-2': $vuetify.breakpoint.xs
+                  }"
                   v-text="player.name"
                 ></v-card-title>
               </div>
@@ -33,13 +43,21 @@
                   v-for="(war, j) in player.wars"
                   :key="j"
                   class="d-flex ml-1 log align-top"
-                  v-bind:class="logClass(war)"
+                  :class="[{
+                    'mobile': $vuetify.breakpoint.xs,
+                    'desktop': !$vuetify.breakpoint.xs,
+                  }, logClass(war)]"
                 >
                   <v-badge
                     bordered
                     v-if="war.collectionDayBattlesPlayed < 3"
                     color="warning"
-                    class="ml-2 mt-1"
+                    class="mt-1"
+                    :class="{
+                      'ml-2': $vuetify.breakpoint.xs,
+                      'ml-3': !$vuetify.breakpoint.xs,
+                    }"
+                    
                     dot
                   >
                   </v-badge>
@@ -54,8 +72,6 @@
       <v-col cols="12" align="center">
         <v-card
           class="legend mb-1"
-          min-width="400"
-          max-width="600"
           v-for="(legendItem, i) in legend"
           :key="i"
           flat
@@ -64,13 +80,19 @@
             <div class="d-flex align-center">
               <div 
                 class="d-flex log align-top ma-2 pa-1"
-                :class="legendItem.class"
+                :class="[{
+                    'mobile': $vuetify.breakpoint.xs,
+                    'desktop': !$vuetify.breakpoint.xs,
+                  }, legendItem.class]"
               >
                 <v-badge
                   bordered
                   v-if="legendItem.type == 'badge'"
                   color="warning"
-                  class="ml-1"
+                  :class="{
+                    'ml-1': $vuetify.breakpoint.xs,
+                    'ml-2': !$vuetify.breakpoint.xs,
+                  }"
                   dot
                 >
                 </v-badge>
@@ -166,7 +188,6 @@
 }
 .v-card.player .headline {
   color: #333;
-  line-height: 0;
 }
 .v-card.player .ranking {
   background: #444;
@@ -177,7 +198,7 @@
   background: #FFB800;
 }
 .v-card.player .ranking.silver {
-  background: #CECECE;
+  background: #BFBFBF;
 }
 .v-card.player .ranking.bronze {
   background: #BC6618;
@@ -186,10 +207,17 @@
   color: #333;
 }
 .log{
+  background: #888;
+}
+.log.desktop {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+}
+.log.mobile {
   width: 12px;
   height: 12px;
-  background: #888;
-  border-radius: 4px;
+  border-radius: 2px;
 }
 .log.win{
   background: #14BE44;

@@ -48,7 +48,7 @@ export default {
   }),
   created() {
     var path = window.location.pathname
-    this.clanTag = path.length > 1 ? path.replace('/','') : '2PUGVU8U';
+    this.clanTag = path.length > 1 ? path.replace('/','') : '2YYYGL';
     
   }
 };
